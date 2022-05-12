@@ -1,8 +1,13 @@
 // all clickable html divs - game fields
 var fields = document.getElementsByClassName('field')
+var stepsHtml = document.getElementById('steps')
+var scoreHtml = document.getElementById('steps')
+var resetHtml = document.getElementById('reset')
 
 // every click to field (player's move) increment this variable
 var step = 0;
+var scoreRed = 0
+var scoreBlue = 0
 
 for (var i = 0; i < fields.length; i++) {
     // Add listeners for all game fields (if user click on a field, call this callback)
@@ -18,8 +23,10 @@ for (var i = 0; i < fields.length; i++) {
             // we can use this for rotate players ◯ or ×
             if (step % 2 === 0) {
                 event.target.innerHTML = '◯';
+                event.target.style.color = 'red';
             } else {
                 event.target.innerHTML = '×';
+                event.target.style.color = 'blue';
             }
             step++
         }
@@ -50,12 +57,36 @@ for (var i = 0; i < fields.length; i++) {
 
                 lastFindChar = fields[i].innerHTML
                 if (count === 3) {
+                    if (lastFindChar === '◯') {
+                        scoreRed++
+                    } else {
+                        scoreBlue++
+                    }
                     alert ("Winner id " + lastFindChar)
+                    for (var i = 0; i < fields.length; i++) {
+                        fields[i].innerHTML = ''
+                    }
                 }
                 
             } else {
                 count = 0
             }
         }
+
+        stepsHtml.innerHTML = "Kolo: " + step
+        scoreHtml.innerHTML = "◯: " + scoreRed + ", ×:" + scoreBlue
+
     })
 }
+
+resetHtml.addEventListener("click", () => {
+    for (var i = 0; i < fields.length; i++) {
+        fields[i].innerHTML = ''
+    }
+    scoreRed=0
+    scoreBlue=0
+    step=0
+    stepsHtml.innerHTML = "Kolo: " + step
+    scoreHtml.innerHTML = "◯: " + scoreRed + ", ×:" + scoreBlue
+
+})
